@@ -13,12 +13,13 @@ WIDTH = int(os.getenv("WIDTH", "600"))
 HEIGHT = int(os.getenv("HEIGHT", "600"))
 
 # Init
+pygame.init()
+
 is_running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-current_stage: Scene = MainMenu(screen)
-pygame.init()
+current_scene: Scene = MainMenu(screen)
 
 # 게임 루프
 while is_running:
@@ -27,12 +28,12 @@ while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
-        current_stage.handle_event(event)
+        current_scene.handle_event(event)
     
     screen.fill(colors.BLACK)
 
-    current_stage._update(dt)
-    current_stage._draw()
+    current_scene._update(dt)
+    current_scene._draw()
 
     pygame.display.update()
 
