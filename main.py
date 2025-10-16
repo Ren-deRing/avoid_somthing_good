@@ -1,5 +1,6 @@
 from scene import Scene
 from scenes.menu import MainMenu
+from manager import SceneManager
 import colors
 import dotenv
 import pygame
@@ -19,7 +20,9 @@ is_running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-current_scene: Scene = MainMenu(screen)
+# Scene Manager
+scenes: list[Scene] = [MainMenu(screen)]
+scene_manager: SceneManager = SceneManager(scenes)
 
 # 게임 루프
 while is_running:
@@ -28,12 +31,12 @@ while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
-        current_scene.handle_event(event)
+        scene_manager._on_event(event)
     
     screen.fill(colors.BLACK)
 
-    current_scene._update(dt)
-    current_scene._draw()
+    scene_manager._update(dt)
+    scene_manager._draw()
 
     pygame.display.update()
 
