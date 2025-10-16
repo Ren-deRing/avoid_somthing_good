@@ -15,9 +15,9 @@
 ## Features
 
 - requirements.txt: pygame, python-dotenv, and done!
-- scenes system: manage multiple scenes << TODO: Scene Manager
+- scenes system: manage multiple scenes
 - game loop: update(dt) and draw()
 - override-based: override something good classes and modify
 
 ## How to use
-- Sincerely??
+- Really??

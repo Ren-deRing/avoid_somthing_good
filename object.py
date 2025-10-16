@@ -20,7 +20,7 @@ class GameObject:
         return self.pos
     
     def get_rect(self) -> pygame.Rect:
-        return pygame.Rect(int(self.pos.x), int(self.pos.y), *tuple(map(int, self.size)))
+        return pygame.Rect(self.pos.x, self.pos.y, *self.size)
     
     def set_pos(self, pos: Vector2 | tuple[float, float]):
         self.pos = Vector2(pos)
@@ -34,6 +34,9 @@ class GameObject:
     def _update(self, dt: float):
         self.velocity += (self.accel * dt)
         self.pos += (self.velocity * dt)
+
+        self.accel = Vector2(0, 0) # 가속도를 모두 적용했으므로 초기화
+        # 고급 Physics 처리는 objects/physics.py PhysicsObject 참조
 
     def _draw(self, screen: pygame.Surface):
         screen.blit(self.texture, tuple(map(int, self.pos)))
