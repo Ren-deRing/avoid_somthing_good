@@ -18,6 +18,7 @@
 - scenes system: manage multiple scenes
 - game loop: update(dt) and draw()
 - override-based: override something good classes and modify
+- component system: override component method and add to object << TODO
 
 ## How to use
 - Really??
