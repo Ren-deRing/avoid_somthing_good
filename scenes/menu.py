@@ -1,13 +1,12 @@
 from pygame.event import Event
 from scene import Scene
 from object import GameObject
-from manager import SceneManager
 import colors
 import utils
 import pygame
 import random
 
-class MainMenu(Scene):
+class MainMenuScene(Scene):
     def __init__(self, screen: pygame.Surface):
         self.frame = 0
 
@@ -28,4 +27,5 @@ class MainMenu(Scene):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.playbutton.get_rect().collidepoint(event.pos):
                 print("Play!!")
-                self.manager.remove_scene(self)
+                self.manager.remove_scene_to_render(self.__class__.__name__)
+                self.manager.add_scene_to_render('AvoidScene')

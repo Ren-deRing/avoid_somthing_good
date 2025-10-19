@@ -1,6 +1,7 @@
 from scene import Scene
-from scenes.menu import MainMenu
+from scenes import avoid, menu
 from manager import SceneManager
+from typing import Type
 import colors
 import dotenv
 import pygame
@@ -21,8 +22,11 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Scene Manager
-scenes: list[Scene] = [MainMenu(screen)]
-scene_manager: SceneManager = SceneManager(scenes)
+scenes: list[Type[Scene]] = [avoid.AvoidScene, menu.MainMenuScene]
+scene_manager: SceneManager = SceneManager(screen, scenes)
+
+# 초기 Scene 설정
+scene_manager.add_scene_to_render('AvoidScene')
 
 # 게임 루프
 while is_running:

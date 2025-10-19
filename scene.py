@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from abc import abstractmethod
 from object import GameObject
 import pygame
 
@@ -14,9 +15,11 @@ class Scene:
     def set_manager(self, manager: "SceneManager"):
         self.manager = manager
 
+    @abstractmethod
     def update(self, dt: float):
         pass
 
+    @abstractmethod
     def handle_event(self, event: pygame.event.Event):
         pass
 
