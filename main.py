@@ -22,6 +22,8 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Scene Manager
+# 순환 참조 문제로 인해, Scene이나 GameObject 내부에서 Scene을 Add, Remove, Set하는 것은 추천되지 않습니다.
+# 대신 모든 Scene을 등록하고, Scene to Render를 Add, Remove, Set하십시오.
 scenes: list[Type[Scene]] = [avoid.AvoidScene, menu.MainMenuScene]
 scene_manager: SceneManager = SceneManager(screen, scenes)
 

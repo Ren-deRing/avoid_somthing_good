@@ -12,7 +12,7 @@ class MainMenuScene(Scene):
 
         self.playbutton = GameObject((50, 50), (50, 50), utils.make_surface((10, 10), colors.BLACK))
         self.objects = [
-            GameObject((0, 0), screen.get_size(), utils.make_surface(screen.get_size(), colors.WHITE)),
+            GameObject(pygame.Vector2(screen.get_size()) / 2, screen.get_size(), utils.make_surface(screen.get_size(), colors.WHITE)),
             self.playbutton
         ]
         super().__init__(screen, self.objects)

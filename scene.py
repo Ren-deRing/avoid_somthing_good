@@ -20,6 +20,10 @@ class Scene:
         pass
 
     @abstractmethod
+    def draw(self):
+        pass
+
+    @abstractmethod
     def handle_event(self, event: pygame.event.Event):
         pass
 
@@ -34,3 +38,4 @@ class Scene:
     def _draw(self):
         for obj in self.objects:
             obj._draw(self.screen)
+        self.draw()

@@ -33,11 +33,8 @@ class GameObject:
     def get_pos(self) -> Vector2:
         return self.pos
     
-    def get_pos_center(self) -> Vector2:
-        return Vector2((self.size[0] / 2) + self.pos.x, (self.size[1] / 2) + self.pos.y)
-
     def get_rect(self) -> pygame.Rect:
-        return pygame.Rect(self.pos.x, self.pos.y, *self.size)
+        return pygame.Rect(self.pos.x - (self.size[0] / 2), self.pos.y - (self.size[0] / 2), *self.size)
     
     def set_pos(self, pos: Vector2 | tuple[float, float]):
         self.pos = Vector2(pos)
@@ -47,4 +44,4 @@ class GameObject:
             component.update(dt)
 
     def _draw(self, screen: pygame.Surface):
-        screen.blit(self.texture, tuple(map(int, self.pos)))
+        screen.blit(self.texture, Vector2(self.pos[0] - (self.size[0] / 2), self.pos[1] - (self.size[1] / 2)) )
