@@ -22,3 +22,7 @@
 
 ## How to use
 - Read the code
+
+
+## TODOs
+- [ ] Python 3.9 or less를 위한 Union 연산자 타입 병합
