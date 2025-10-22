@@ -23,7 +23,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Scene Manager
 # 순환 참조 문제로 인해, Scene이나 GameObject 내부에서 Scene을 Add, Remove, Set하는 것은 추천되지 않습니다.
-# 대신 모든 Scene을 등록하고, Scene to Render를 Add, Remove, Set하십시오.
+# 그 대신, 모든 Scene을 등록하고 Scene to Render 메서드를 통해 조작하십시오.
+# Manager는 Scene to Render를 자동으로 Instance화 하고 Scene 이름 dict를 조작합니다.
 scenes: list[Type[Scene]] = [avoid.AvoidScene, menu.MainMenuScene]
 scene_manager: SceneManager = SceneManager(screen, scenes)
 

@@ -22,7 +22,7 @@ class AvoidScene(Scene):
         distance = direction_vector.length()
 
         if distance < 100:
-            FORCE = 50000.0
+            FORCE = 100000.0
             
             # 힘은 거리에 반비례
             force_magnitude = FORCE / (distance + 1.0) 

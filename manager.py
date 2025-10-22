@@ -11,43 +11,55 @@ class SceneManager:
     def __init__(self, screen: pygame.Surface, scenes: list[Type[Scene]] | Type[Scene]):
         if not isinstance(scenes, list):
             self.scenes = [scenes]
-        else: self.scenes = scenes
+        else:
+            self.scenes = scenes
 
         self.screen = screen
 
         # Scenes dict 초기화
-        self.scenes_dict = {}
-        for scene in self.scenes:
-            self.scenes_dict[scene.__name__] = scene
+        self.scenes_dict = {scene.__name__: scene for scene in self.scenes}
 
         self.scenes_to_render: list[Scene] = []
+        self.render_names_set: set[str] = set()  # 중복 렌더링 체크용
 
-        self.scenes_to_remove_render: list[Scene] = []
-        self.scenes_to_remove: list[Type[Scene]] = []
+        self.scenes_to_remove_render: set[Scene] = set()
+        self.scenes_to_remove: set[Type[Scene]] = set()
 
     def set_manager(self, scenes: list[Scene]):
         for s in scenes:
             s.set_manager(self)
 
     def add_scene_to_render(self, scene_name: str, *args, **kwargs) -> bool:
-        if scene_name in self.scenes_dict.keys():
-            if not any(s.__class__.__name__ == scene_name for s in self.scenes_to_render):
-                scenes_instance = self.scenes_dict[scene_name](self.screen, *args, **kwargs)
-
-                self.scenes_to_render.append(scenes_instance)
-                self.set_manager([scenes_instance])
-                return True
+        """
+        Scene 리스트에서 렌더링될 Scene을 지정합니다.
+        scene_name은 Manager 초기화 시 파라미터로 주어진 scenes 리스트에 포함되어 있어야 합니다.
+        파라미터를 추가하여 kwargs를 전달할 수 있습니다.
+        """
+        if scene_name in self.scenes_dict and scene_name not in self.render_names_set:
+            scenes_instance = self.scenes_dict[scene_name](self.screen, *args, **kwargs)
+            self.scenes_to_render.append(scenes_instance)
+            self.render_names_set.add(scene_name)
+            self.set_manager([scenes_instance])
+            return True
         return False
     
     def remove_scene_to_render(self, scene_name: str) -> bool:
-        if scene_name in self.scenes_dict.keys():
+        """
+        Scene 리스트에서 렌더링될 Scene을 제거합니다.
+        scene_name은 렌더링될 Scene을 가리켜야 합니다.
+        """
+        if scene_name in self.scenes_dict:
             for scene_to_render in self.scenes_to_render:
                 if scene_to_render.__class__.__name__ == scene_name:
-                    self.scenes_to_remove_render.append(scene_to_render)
+                    self.scenes_to_remove_render.add(scene_to_render)
                     return True
         return False
 
     def add_scene(self, scene: list[Type[Scene]] | Type[Scene]):
+        """
+        Scene 리스트에 Scene을 추가합니다.
+        렌더링될 Scene을 추가한다면, add_scene_to_render를 참조하십시오.
+        """
         if isinstance(scene, list):
             self.scenes.extend(scene)
             for s in scene:
@@ -56,16 +68,24 @@ class SceneManager:
             self.scenes.append(scene)
             self.scenes_dict[scene.__name__] = scene
 
-    # 제거로 지정된 Scene은 _update 호출 완료시에 제거됩니다.
     def remove_scene(self, scene: list[Type[Scene]] | Type[Scene]):
+        """
+        Scene 리스트에서 Scene을 제거합니다.
+        렌더링될 Scene을 제거한다면, remove_scene_to_render를 참조하십시오. 
+        """
         if isinstance(scene, list):
-            self.scenes_to_remove.extend(scene)
-        else: self.scenes_to_remove.append(scene)
+            self.scenes_to_remove.update(scene)
+        else:
+            self.scenes_to_remove.add(scene)
 
     def set_scene(self, scene: list[Type[Scene]] | Type[Scene]):
+        """
+        Scene 리스트를 다시 지정합니다.
+        """
         if isinstance(scene, list):
             self.scenes = scene
-        else: self.scenes = [scene]
+        else:
+            self.scenes = [scene]
 
         self.scenes_dict.clear()
         for s in self.scenes:
@@ -82,6 +102,7 @@ class SceneManager:
         for scene in self.scenes_to_remove_render: # Remove 플래그된 Render Scene Remove
             if scene in self.scenes_to_render:
                 self.scenes_to_render.remove(scene)
+                self.render_names_set.discard(scene.__class__.__name__)
         self.scenes_to_remove_render.clear()
         
         for scene_class in self.scenes_to_remove: # Remove 플래그된 Scene Remove

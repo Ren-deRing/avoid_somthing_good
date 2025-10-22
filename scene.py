@@ -13,6 +13,10 @@ class Scene:
         self.objects = objects
 
     def set_manager(self, manager: "SceneManager"):
+        """
+        Scene의 Manager를 지정합니다.
+        SceneManager에 의해 자동으로 초기화되므로 직접 호출하지 마십시오.
+        """
         self.manager = manager
 
     @abstractmethod
