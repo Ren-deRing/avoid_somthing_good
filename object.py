@@ -34,7 +34,7 @@ class GameObject:
         return self.pos
     
     def get_rect(self) -> pygame.Rect:
-        return pygame.Rect(self.pos.x - (self.size[0] / 2), self.pos.y - (self.size[0] / 2), *self.size)
+        return pygame.Rect(self.pos.x - (self.size[0] / 2), self.pos.y - (self.size[1] / 2), *self.size)
     
     def set_pos(self, pos: Vector2 | tuple[float, float]):
         self.pos = Vector2(pos)
